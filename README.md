@@ -43,23 +43,7 @@ The Student Management System is a web application that allows students to log i
 
 4. Set up the MySQL database:
     ```sql
-    CREATE DATABASE student_management_system;
-    ```
-
-5. Configure the database connection:
-   Create a `.env` file in the `backend` directory and add the following:
-    ```env
-    DB_NAME=student_management_system
-    DB_USER=your_mysql_username
-    DB_PASSWORD=your_mysql_password
-    DB_HOST=localhost
-    DB_DIALECT=mysql
-    ```
-
-6. Run the database migrations:
-    ```bash
-    cd ../backend
-    npx sequelize-cli db:migrate
+    CREATE DATABASE student_dashboard;
     ```
 
 ### Running the Application
