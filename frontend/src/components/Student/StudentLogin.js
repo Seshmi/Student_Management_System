@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import './../../StudentLogin.css';
 
 const StudentLogin = () => {
   const [registrationNumber, setRegistrationNumber] = useState('');
@@ -11,7 +12,7 @@ const StudentLogin = () => {
     try {
       const response = await axios.post('http://localhost:3000/student/login', { registrationNumber, password });
       localStorage.setItem('token', response.data.token);
-      // Redirect to change password or marks page based on the response
+
       if (response.data.changePassword) {
         navigate('/student/change-password');
       } else {
@@ -23,7 +24,7 @@ const StudentLogin = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Student Login</h2>
       <input type="text" placeholder="Registration Number" value={registrationNumber} onChange={(e) => setRegistrationNumber(e.target.value)} />
       <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />

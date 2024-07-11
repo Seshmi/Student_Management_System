@@ -2,11 +2,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Student = require("../models/student");
 const Marks = require("../models/marks");
+const Admin = require("../models/admin");
 
 exports.addStudent = async (req, res) => {
   try {
     const { registrationNumber, name } = req.body;
-    // Default password is registration number
+
     const password = await bcrypt.hash(registrationNumber, 10);
     const student = await Student.create({
       registrationNumber,
@@ -30,16 +31,16 @@ exports.addMarks = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { registrationNumber, password } = req.body;
-  const student = await Student.findOne({ where: { registrationNumber } });
-  if (!student) return res.status(401).json({ message: "Invalid credentials" });
+  const { username, password } = req.body;
+  const admin = await Admin.findOne({ where: { username } });
+  if (!admin) return res.status(401).json({ message: "Invalid credentials1" });
 
-  const isValidPassword = await bcrypt.compare(password, student.password);
+  const isValidPassword = await bcrypt.compare(password, admin.password);
   if (!isValidPassword)
-    return res.status(401).json({ message: "Invalid credentials" });
+    return res.status(401).json({ message: "Invalid credentials2" });
 
   const token = jwt.sign(
-    { id: student.id, isAdmin: student.isAdmin },
+    { id: admin.id },
     "secret_key"
   );
   res.json({ token });
