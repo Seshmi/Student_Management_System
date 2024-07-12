@@ -7,17 +7,9 @@ exports.login = async (req, res) => {
   const { registrationNumber, password } = req.body;
   try {
     let student = await Student.findOne({ where: { registrationNumber } });
-
+    console.log('student:', student);
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
-    }
-
-    if (!student.isPasswordChanged) {
-      const isMatch = await bcrypt.compare(registrationNumber, student.password);
-      if (!isMatch) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-      return res.status(200).json({ changePassword: true });
     }
 
     const isMatch = await bcrypt.compare(password, student.password);
@@ -29,7 +21,9 @@ exports.login = async (req, res) => {
       { id: student.id, isAdmin: false },
       "secret_key"
     );
-    res.json({ token });
+    const isPasswordChanged = student.isPasswordChanged;
+    return res.status(200).json({ isPasswordChanged, token });
+
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Server Error" });
@@ -37,9 +31,9 @@ exports.login = async (req, res) => {
 };
 
 exports.changePassword = async (req, res) => {
-  const { newPassword } = req.body;
-  const { id } = req.user;
-  if (!newPassword || !id) {
+  const { registrationNumber, newPassword } = req.body;
+
+  if (!newPassword || !registrationNumber) {
     return res.status(400).json({ error: "Invalid request" });
   }
 
@@ -47,7 +41,7 @@ exports.changePassword = async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await Student.update(
       { password: hashedPassword, isPasswordChanged: true },
-      { where: { id } }
+      { where: { registrationNumber } }
     );
     res.status(200).json({ message: "Password changed successfully" });
   } catch (error) {
@@ -58,9 +52,9 @@ exports.changePassword = async (req, res) => {
 
 
 exports.getMarks = async (req, res) => {
-  const { id } = req.user;
+  const { id } = req.params;
   try {
-    const marks = await Marks.findAll({ where: { StudentId: id } });
+    const marks = await Marks.findAll({ where: { studentId: id } });
     res.json(marks);
   } catch (error) {
     console.error(error.message);

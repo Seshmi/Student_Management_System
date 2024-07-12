@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import './../../StudentLogin.css';
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+  const registrationNumber = localStorage.getItem('registrationNumber');
 
   const handleChangePassword = async () => {
     if (newPassword.trim() === '') {
@@ -22,7 +25,7 @@ const ChangePassword = () => {
 
       console.log('Sending request with newPassword:', newPassword);
 
-      const response = await axios.post('http://localhost:3000/student/change-password', { newPassword }, {
+      const response = await axios.post('http://localhost:3000/student/change-password', { registrationNumber, newPassword }, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -33,6 +36,7 @@ const ChangePassword = () => {
       setSuccess('Password changed successfully');
       setError('');
       setNewPassword('');
+      navigate('/student/marks');
     } catch (error) {
       console.error('Error changing password:', error);
       if (error.response) {

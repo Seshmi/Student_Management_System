@@ -3,6 +3,10 @@ const sequelize = require("../config/database");
 const Student = require("./student");
 
 const Marks = sequelize.define("Marks", {
+  studentId: {
+    type: DataTypes.STRING,
+    // allowNull: false,
+  },
   maths: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -17,7 +21,7 @@ const Marks = sequelize.define("Marks", {
   },
 });
 
-Marks.belongsTo(Student);
-Student.hasMany(Marks);
+// Marks.belongsTo(Student);
+// Student.hasMany(Marks);
 
 module.exports = Marks;

@@ -11,11 +11,14 @@ const StudentLogin = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://localhost:3000/student/login', { registrationNumber, password });
-      localStorage.setItem('token', response.data.token);
-
-      if (response.data.changePassword) {
+      console.log(response.data);
+      if (response.data.isPasswordChanged === false) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('registrationNumber', registrationNumber);
         navigate('/student/change-password');
       } else {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('registrationNumber', registrationNumber);
         navigate('/student/marks');
       }
     } catch (error) {

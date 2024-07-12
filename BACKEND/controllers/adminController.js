@@ -23,6 +23,7 @@ exports.addStudent = async (req, res) => {
 exports.addMarks = async (req, res) => {
   try {
     const { studentId, maths, science, english } = req.body;
+    console.log(req.body);
     const marks = await Marks.create({ studentId, maths, science, english });
     res.status(201).json(marks);
   } catch (error) {

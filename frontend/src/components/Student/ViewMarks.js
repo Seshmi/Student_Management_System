@@ -9,8 +9,9 @@ const ViewMarks = () => {
     const fetchMarks = async () => {
       try {
         const token = localStorage.getItem("token");
+        const registrationNumber = localStorage.getItem("registrationNumber");
         const response = await axios.get(
-          "http://localhost:3000/student/marks",
+          `http://localhost:3000/student/marks/${registrationNumber}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

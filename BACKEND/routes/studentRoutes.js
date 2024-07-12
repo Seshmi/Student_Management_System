@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.post("/login", login);
 router.post("/change-password", authMiddleware, changePassword);
-router.get("/marks", authMiddleware, getMarks);
+router.get("/marks/:id", authMiddleware, getMarks);
 
 module.exports = router;
