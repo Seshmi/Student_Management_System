@@ -21,7 +21,4 @@ const Marks = sequelize.define("Marks", {
   },
 });
 
-// Marks.belongsTo(Student);
-// Student.hasMany(Marks);
-
 module.exports = Marks;
